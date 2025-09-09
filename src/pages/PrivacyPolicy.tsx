@@ -107,7 +107,7 @@ const PrivacyPolicy = () => {
               If you have questions or concerns about your data, please contact:
             </p>
             <div className="text-sm leading-relaxed bg-gray-50 p-4 rounded-lg">
-              <p className="font-semibold">JRB Gold</p>
+              <p className="font-semibold">JRB Gold Pvt Limited</p>
               <p>Address - No: 1539, 1st Floor,</p>
               <p>Soundar Complex, Vellore Road</p>
               <p>Near Anna Arch</p>

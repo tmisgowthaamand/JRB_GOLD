@@ -3,6 +3,7 @@ import { Search, TrendingUp, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
+import { useNavigate } from "react-router-dom";
 import productBangle from "@/assets/product-bangle.jpg";
 import productCoin from "@/assets/product-coin.jpg";
 import productNecklace from "@/assets/product-necklace.jpg";
@@ -28,7 +29,7 @@ interface SearchBoxProps {
   onProductSelect?: (product: Product) => void;
   placeholder?: string;
   className?: string;
-  trendingProducts?: Array<{id: string; name: string; category: string; price: number; image: string}>;
+  trendingProducts?: { id: string; name: string; category: string; price: number; image: string; }[];
   showTrending?: boolean;
 }
 
@@ -37,12 +38,13 @@ const SearchBox = ({
   placeholder = "Search jewelry...", 
   className = "",
   trendingProducts = [],
-  showTrending = false
+  showTrending = false,
 }: SearchBoxProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
@@ -129,11 +131,21 @@ const SearchBox = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchQuery(value);
-    setIsOpen(value.length > 0 || showTrending);
+    setIsOpen(true);
   };
 
   const handleInputFocus = () => {
-    setIsOpen(searchQuery.length > 0 || showTrending);
+    setIsOpen(true);
+  };
+
+  const handleCategoryClick = (category: string) => {
+    setIsOpen(false);
+    setSearchQuery("");
+    if (category === 'Gold') {
+      navigate('/shop?category=gold');
+    } else if (category === 'Silver') {
+      navigate('/shop?category=silver');
+    }
   };
 
   const handleProductClick = (product: Product | {id: string; name: string; category: string; price: number; image: string}) => {
@@ -173,84 +185,40 @@ const SearchBox = ({
         )}
       </div>
       
-      {/* Search Results Dropdown */}
-      {isOpen && (filteredProducts.length > 0 || (showTrending && trendingProducts && trendingProducts.length > 0)) && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border-2 border-yellow-200 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto animate-in fade-in-0 zoom-in-95 duration-200">
-          {filteredProducts.length > 0 ? (
-            <>
-              <div className="px-4 py-3 text-sm font-semibold text-yellow-800 bg-yellow-50/80 border-b border-yellow-200">
-                <Search className="inline h-4 w-4 mr-2" />
-                Search Results
+      {/* Category Options Dropdown */}
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-2 bg-white/95 backdrop-blur-md border-2 border-yellow-200 rounded-lg shadow-xl z-50 animate-in fade-in-0 zoom-in-95 duration-200">
+          <div className="px-4 py-3 text-sm font-semibold text-yellow-800 bg-yellow-50/80 border-b border-yellow-200">
+            <Search className="inline h-4 w-4 mr-2" />
+            Categories
+          </div>
+          <div
+            className="px-4 py-3 cursor-pointer border-b border-gray-100 transition-all duration-150 hover:bg-yellow-50/50 hover:border-l-4 hover:border-l-yellow-300"
+            onClick={() => handleCategoryClick('Gold')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center shadow-sm border border-gray-200">
+                <span className="text-white font-bold text-lg">Au</span>
               </div>
-              {filteredProducts.map((product, index) => (
-                <div
-                  key={product.id}
-                  className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all duration-150 ${
-                    index === 0 
-                      ? 'bg-yellow-50 border-l-4 border-l-yellow-400 shadow-sm' 
-                      : 'hover:bg-yellow-50/50 hover:border-l-4 hover:border-l-yellow-300'
-                  }`}
-                  onClick={() => handleProductClick(product)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-12 h-12 rounded-lg object-cover shadow-sm border border-gray-200"
-                    />
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm text-gray-900">{product.name}</div>
-                      <div className="text-xs text-yellow-600 font-medium">{product.category}</div>
-                    </div>
-                    <div className="text-sm font-bold text-yellow-700 bg-yellow-100 px-2 py-1 rounded-md">
-                      ₹{product.price.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </>
-          ) : showTrending && trendingProducts && trendingProducts.length > 0 ? (
-            <>
-              <div className="px-4 py-3 text-sm font-semibold text-yellow-800 bg-yellow-50/80 border-b border-yellow-200">
-                <TrendingUp className="inline h-4 w-4 mr-2" />
-                Trending Products
+              <div className="flex-1">
+                <div className="font-semibold text-sm text-gray-900">Gold Jewelry</div>
+                <div className="text-xs text-yellow-600 font-medium">Premium Collection</div>
               </div>
-              {trendingProducts.map((product, index) => (
-                <div
-                  key={product.id}
-                  className={`px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 transition-all duration-150 ${
-                    index === 0 
-                      ? 'bg-yellow-50 border-l-4 border-l-yellow-400 shadow-sm' 
-                      : 'hover:bg-yellow-50/50 hover:border-l-4 hover:border-l-yellow-300'
-                  }`}
-                  onClick={() => handleProductClick(product)}
-                >
-                  <div className="flex items-center space-x-3">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-12 h-12 rounded-lg object-cover shadow-sm border border-gray-200"
-                    />
-                    <div className="flex-1">
-                      <div className="font-semibold text-sm text-gray-900">{product.name}</div>
-                      <div className="text-xs text-yellow-600 font-medium">{product.category}</div>
-                    </div>
-                    <div className="text-sm font-bold text-yellow-700 bg-yellow-100 px-2 py-1 rounded-md">
-                      ₹{product.price.toLocaleString()}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </>
-          ) : null}
-        </div>
-      )}
-      
-      {/* Empty State */}
-      {isOpen && searchQuery && filteredProducts.length === 0 && (
-        <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-background border border-border rounded-md shadow-lg">
-          <div className="p-4 text-center text-sm text-muted-foreground">
-            No products found for "{searchQuery}"
+            </div>
+          </div>
+          <div
+            className="px-4 py-3 cursor-pointer transition-all duration-150 hover:bg-yellow-50/50 hover:border-l-4 hover:border-l-yellow-300"
+            onClick={() => handleCategoryClick('Silver')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center shadow-sm border border-gray-200">
+                <span className="text-white font-bold text-lg">Ag</span>
+              </div>
+              <div className="flex-1">
+                <div className="font-semibold text-sm text-gray-900">Silver Collection</div>
+                <div className="text-xs text-yellow-600 font-medium">Pure Silver</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

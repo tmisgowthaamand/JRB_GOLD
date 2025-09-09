@@ -3,6 +3,7 @@ import { Search, User, Heart, ShoppingCart, Menu, X, LogIn, UserPlus, LogOut, Pa
 import productBangle from "@/assets/product-bangle.jpg";
 import productCoin from "@/assets/product-coin.jpg";
 import productNecklace from "@/assets/product-necklace.jpg";
+import silverBracelet from "@/assets/silver-bracelet-set.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -80,9 +81,9 @@ const Header = () => {
 
   const trendingProducts = [
     { id: '1', name: 'Gold Bangles', category: 'Bangles', price: 15999, image: productBangle },
-    { id: '2', name: 'Diamond Rings', category: 'Rings', price: 45999, image: productCoin },
-    { id: '3', name: 'Temple Jewelry', category: 'Necklaces', price: 32499, image: productNecklace },
-    { id: '4', name: 'Antique Necklaces', category: 'Necklaces', price: 28999, image: productBangle },
+    { id: '2', name: 'Temple Jewelry', category: 'Necklaces', price: 32499, image: productNecklace },
+    { id: '3', name: 'Antique Necklaces', category: 'Necklaces', price: 28999, image: productBangle },
+    { id: '4', name: 'Silver Necklace', category: 'Pure Silver', price: 3775, image: silverBracelet },
   ];
 
   const handleProductSelect = (product: any) => {
@@ -196,8 +197,7 @@ const Header = () => {
                   onProductSelect={handleProductSelect}
                   placeholder="Search jewelry..."
                   className="w-full text-sm"
-                  trendingProducts={trendingProducts}
-                  showTrending={true}
+                  showTrending={false}
                 />
               </div>
 
