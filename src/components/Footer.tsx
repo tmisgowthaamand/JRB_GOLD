@@ -58,21 +58,6 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="border-t border-gray-700">
         <div className="container mx-auto py-8 xs:py-10 lg:py-12">
-          {/* Logo Section */}
-          <div className="flex justify-center mb-8">
-            <div className="flex items-center space-x-3">
-              <img 
-                src="/logo1.png?v=1" 
-                alt="JRB Gold Logo" 
-                className="w-12 h-12 object-contain brightness-110 contrast-110"
-              />
-              <div className="text-center">
-                <h2 className="font-playfair text-xl font-bold text-yellow-500">JRB GOLD</h2>
-                <p className="text-sm text-gray-300">Premium Gold & Silver Jewelry</p>
-              </div>
-            </div>
-          </div>
-          
           <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-6 xs:gap-8">
             {/* Company Column */}
             <div>
